@@ -5,10 +5,9 @@ export default {
     adapter: adapter({
       pages: 'build',  // Папка, куда будет генерироваться сайт
       assets: 'build',
-			fallback: null,
-			strict: false
+      fallback: null,  // Если у вас SPA, можно добавить '200.html'
+      strict: false
     }),
-    // Убедитесь, что paths.base правильно настроен, если сайт не будет находиться в корне домена
     paths: {
       base: process.env.NODE_ENV === 'production' ? '/scroll-site-template' : ''
     }
