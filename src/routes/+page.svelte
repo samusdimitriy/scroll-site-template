@@ -1,7 +1,7 @@
 <script>
   import { onMount } from 'svelte';
   import emailjs from 'emailjs-com';
-  import "../main.css"; 
+  import "../main.css";
 
   let name = '';
   let email = '';
@@ -10,12 +10,12 @@
 
   function handleSubmit(event) {
     event.preventDefault();
-    
+
     const templateParams = {
       from_name: name,
-      from_email: email, 
+      from_email: email,
       message: message,
-      reply_to: email 
+      reply_to: email
     };
 
     emailjs
@@ -23,26 +23,29 @@
       .then((response) => {
         console.log('SUCCESS!', response.status, response.text);
         isSubmitted = true;
+        initializeGSAP(); // Re-initialize GSAP animations after form submission
       })
       .catch((error) => {
         console.error('FAILED...', error);
       });
   }
 
-  onMount(() => {
-    const scriptGSAP = document.createElement('script');
-    scriptGSAP.src = '/lib/gsap.min.js';
-    document.body.appendChild(scriptGSAP);
+  function loadScript(src) {
+    return new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.src = src;
+      script.onload = resolve;
+      script.onerror = reject;
+      document.body.appendChild(script);
+    });
+  }
 
-    const scriptScrollTrigger = document.createElement('script');
-    scriptScrollTrigger.src = '/lib/ScrollTrigger.min.js';
-    document.body.appendChild(scriptScrollTrigger);
+  async function initializeGSAP() {
+    try {
+      await loadScript('/lib/gsap.min.js');
+      await loadScript('/lib/ScrollTrigger.min.js');
+      await loadScript('/lib/ScrollSmoother.min.js');
 
-    const scriptScrollSmoother = document.createElement('script');
-    scriptScrollSmoother.src = '/lib/ScrollSmoother.min.js';
-    document.body.appendChild(scriptScrollSmoother);
-
-    scriptScrollSmoother.onload = () => {
       if (typeof gsap !== 'undefined') {
         gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 
@@ -62,8 +65,16 @@
             scrub: true,
           }
         });
+      } else {
+        console.warn('GSAP is not defined. Please ensure that the GSAP scripts are loaded.');
       }
-    };
+    } catch (error) {
+      console.error('Failed to load GSAP scripts:', error);
+    }
+  }
+
+  onMount(() => {
+    initializeGSAP();
   });
 </script>
 
@@ -127,30 +138,32 @@
                 Für weitere Informationen erreichen Sie uns telefonisch oder per E-Mail.
               </p>
               <br>
-              {#if !isSubmitted}
-                <form class="contact-form" on:submit={handleSubmit}>
-                  <input 
-                    type="text" 
-                    placeholder="Name" 
-                    bind:value={name}
-                    required
-                  />
-                  <input 
-                    type="email" 
-                    placeholder="Email" 
-                    bind:value={email}
-                    required
-                  />
-                  <textarea 
-                    placeholder="Your message" 
-                    bind:value={message}
-                    required
-                  ></textarea>
-                  <button type="submit">Send</button>
-                </form>
-              {:else}
-                <p class="success-message">Thank you! Your message has been sent.</p>
-              {/if}
+              {#key isSubmitted}
+                {#if !isSubmitted}
+                  <form class="contact-form" on:submit={handleSubmit}>
+                    <input
+                      type="text"
+                      placeholder="Name"
+                      bind:value={name}
+                      required
+                    />
+                    <input
+                      type="email"
+                      placeholder="Email"
+                      bind:value={email}
+                      required
+                    />
+                    <textarea
+                      placeholder="Your message"
+                      bind:value={message}
+                      required
+                    ></textarea>
+                    <button type="submit">Send</button>
+                  </form>
+                {:else}
+                  <p class="success-message">Thank you! Your message has been sent.</p>
+                {/if}
+              {/key}
             </div>
           </div>
         </main>
