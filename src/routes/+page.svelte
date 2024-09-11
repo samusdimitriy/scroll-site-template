@@ -1,5 +1,6 @@
 <script>
   import { onMount } from 'svelte'
+  import { base } from '$app/paths';
   import emailjs from 'emailjs-com'
   import "../main.css"
 
@@ -113,7 +114,7 @@
       <div class="container">
         <main class="gallery">
           <div data-speed=".9" class="gallery__left">
-            <img class="gallery__item" src="/img/work/11.jpg" alt="Work 1" />
+            <img class="gallery__item" src="{base}/img/work/11.jpg" alt="Work 1" />
             <div class="text-block gallery__item">
               <h2 class="text-block__h">Unterrichtssprachen:</h2>
               <p class="text-block__p">
@@ -125,7 +126,7 @@
                 lernen.
               </p>
             </div>
-            <img class="gallery__item" src="/img/work/2.jpg" alt="Work 2" />
+            <img class="gallery__item" src="{base}/img/work/2.jpg" alt="Work 2" />
             <div class="text-block gallery__item">
               <h2 class="text-block__h">Preise und Zahlungsmodalitäten:</h2>
               <p class="text-block__p">
@@ -137,7 +138,7 @@
                 zu fördern.
               </p>
             </div>
-            <img class="gallery__item" src="/img/work/6.jpg" alt="Work 3" />
+            <img class="gallery__item" src="{base}/img/work/6.jpg" alt="Work 3" />
           </div>
 
           <div data-speed="1.1" class="gallery__right">
@@ -153,7 +154,7 @@
                 Musiker sind – Sie werden bei ihr den richtigen Unterricht finden.
               </p>
             </div>
-            <img class="gallery__item" src="/img/work/4.jpg" alt="Work 4" />
+            <img class="gallery__item" src="{base}/img/work/4.jpg" alt="Work 4" />
             <div class="text-block gallery__item">
               <h2 class="text-block__h">Standort und Unterrichtsformat:</h2>
               <p class="text-block__p">
@@ -166,7 +167,7 @@
                 wir garantieren Ihnen ein individuelles Lernerlebnis.
               </p>
             </div>
-            <img class="gallery__item" src="/img/work/5.jpg" alt="Work 5" />
+            <img class="gallery__item" src="{base}/img/work/5.jpg" alt="Work 5" />
             <div class="text-block gallery__item">
               <h2 class="text-block__h">Individueller Ansatz und Jährliches Konzert:</h2>
               <p class="text-block__p">
