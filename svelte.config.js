@@ -3,9 +3,9 @@ import adapter from '@sveltejs/adapter-static';
 export default {
   kit: {
     adapter: adapter({
-      pages: 'build',  // Папка, куда будет генерироваться сайт
+      pages: 'build', 
       assets: 'build',
-      fallback: null,  // Если у вас SPA, можно добавить '200.html'
+      fallback: null,
       strict: false
     }),
     paths: {
