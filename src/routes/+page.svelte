@@ -50,28 +50,49 @@
     }
   }
 
-  onMount(() => {
-    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined' && typeof ScrollSmoother !== 'undefined') {
-      gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
+  // Функция для динамической загрузки скриптов
+  function loadScript(src) {
+    return new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.src = src;
+      script.onload = () => resolve(script);
+      script.onerror = () => reject(new Error(`Failed to load script ${src}`));
+      document.body.appendChild(script);
+    });
+  }
 
-      ScrollSmoother.create({
-        wrapper: ".wrapper",
-        content: ".content",
-        smooth: 1.5,
-        effects: true,
-      });
+  onMount(async () => {
+    try {
+      // Динамически загружаем GSAP и плагины
+      await loadScript('/lib/gsap.min.js');
+      await loadScript('/lib/ScrollTrigger.min.js');
+      await loadScript('/lib/ScrollSmoother.min.js');
 
-      gsap.fromTo(".hero-section", { opacity: 1 }, {
-        opacity: 0,
-        scrollTrigger: {
-          trigger: ".hero-section",
-          start: "center",
-          end: "820",
-          scrub: true,
-        }
-      });
-    } else {
-      console.error('GSAP or plugins are not loaded.');
+      // Проверяем, что GSAP загружен
+      if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined' && typeof ScrollSmoother !== 'undefined') {
+        gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
+
+        ScrollSmoother.create({
+          wrapper: ".wrapper",
+          content: ".content",
+          smooth: 1.5,
+          effects: true,
+        });
+
+        gsap.fromTo(".hero-section", { opacity: 1 }, {
+          opacity: 0,
+          scrollTrigger: {
+            trigger: ".hero-section",
+            start: "center",
+            end: "820",
+            scrub: true,
+          }
+        });
+      } else {
+        console.error('GSAP or plugins are not loaded.');
+      }
+    } catch (error) {
+      console.error('Failed to load GSAP scripts:', error);
     }
   });
 </script>
