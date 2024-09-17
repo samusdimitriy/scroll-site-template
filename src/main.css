@@ -11,11 +11,12 @@
 }
 @font-face {
   font-family: raleway-c;
-  src: url(./fonts/raleway-regular.woff2);
+  src: url('/fonts/raleway-regular.woff2') format('woff2');
 }
+
 @font-face {
   font-family: outfit-c;
-  src: url(./fonts/outfit-regular.woff2);
+  src: url('/fonts/outfit-regular.woff2') format('woff2');
 }
 h1,
 h2,
@@ -33,7 +34,7 @@ h6 {
   will-change: transform;
 }
 body {
-  background-image: url(./img/bg.jpg);
+  background-image: url('/img/bg.jpg');
   background-size: 50px;
   color: #fafafa;
   font-family: raleway-c;
