@@ -1,15 +1,11 @@
-import adapter from '@sveltejs/adapter-static';
+// svelte.config.js
+import adapter from '@sveltejs/adapter-vercel';
 
 export default {
   kit: {
-    adapter: adapter({
-      pages: 'build', 
-      assets: 'build',
-      fallback: null,
-      strict: false
-    }),
-    paths: {
-      base: process.env.NODE_ENV === 'production' ? '/scroll-site-template' : ''
-    }
+    adapter: adapter(),
+    // paths: {
+    //   base: '/scroll-site-template'
+    //     }
   }
 };

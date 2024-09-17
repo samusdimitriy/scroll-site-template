@@ -1,27 +1,27 @@
 <script>
-  import { onMount } from 'svelte'
+  import { onMount } from 'svelte';
   import { base } from '$app/paths';
-  import emailjs from 'emailjs-com'
-  import "../main.css"
+  import emailjs from '@emailjs/browser';
+  import "../main.css";
 
-  let name = ''
-  let email = ''
-  let message = ''
-  let isSubmitted = false
-  let loading = false
-  let formElement
+  let name = '';
+  let email = '';
+  let message = '';
+  let isSubmitted = false;
+  let loading = false;
+  let formElement;
 
   async function handleSubmit(event) {
-    event.preventDefault()
+    event.preventDefault();
 
     const templateParams = {
       from_name: name,
       from_email: email,
       message: message,
       reply_to: email
-    }
+    };
 
-    loading = true
+    loading = true;
 
     try {
       const response = await emailjs.send(
@@ -29,74 +29,51 @@
         'template_hirju86',
         templateParams,
         'Jone0tIVwWAVv1y2I'
-      )
+      );
 
-      console.log('SUCCESS!', response.status, response.text)
+      console.log('SUCCESS!', response.status, response.text);
 
-      // Успешная отправка
-      isSubmitted = true
-      loading = false
+      isSubmitted = true;
+      loading = false;
 
-      // Очищаем форму
-      name = ''
-      email = ''
-      message = ''
+      name = '';
+      email = '';
+      message = '';
 
-      // Скроллим к форме, чтобы она осталась в центре экрана
       formElement.scrollIntoView({
         behavior: 'smooth',
         block: 'center'
-      })
+      });
     } catch (error) {
-      console.error('FAILED...', error)
-      loading = false
-    }
-  }
-
-  function loadScript(src) {
-    return new Promise((resolve, reject) => {
-      const script = document.createElement('script')
-      script.src = src
-      script.onload = resolve
-      script.onerror = reject
-      document.body.appendChild(script)
-    })
-  }
-
-  async function initializeGSAP() {
-    try {
-      await loadScript('/lib/gsap.min.js')
-      await loadScript('/lib/ScrollTrigger.min.js')
-      await loadScript('/lib/ScrollSmoother.min.js')
-
-      if (typeof gsap !== 'undefined') {
-        gsap.registerPlugin(ScrollTrigger, ScrollSmoother)
-
-        ScrollSmoother.create({
-          wrapper: ".wrapper",
-          content: ".content",
-          smooth: 1.5,
-          effects: true,
-        })
-
-        gsap.fromTo(".hero-section", { opacity: 1 }, {
-          opacity: 0,
-          scrollTrigger: {
-            trigger: ".hero-section",
-            start: "center",
-            end: "820",
-            scrub: true,
-          }
-        })
-      }
-    } catch (error) {
-      console.error('Failed to load GSAP scripts:', error)
+      console.error('FAILED...', error);
+      loading = false;
     }
   }
 
   onMount(() => {
-    initializeGSAP()
-  })
+    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined' && typeof ScrollSmoother !== 'undefined') {
+      gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
+
+      ScrollSmoother.create({
+        wrapper: ".wrapper",
+        content: ".content",
+        smooth: 1.5,
+        effects: true,
+      });
+
+      gsap.fromTo(".hero-section", { opacity: 1 }, {
+        opacity: 0,
+        scrollTrigger: {
+          trigger: ".hero-section",
+          start: "center",
+          end: "820",
+          scrub: true,
+        }
+      });
+    } else {
+      console.error('GSAP or plugins are not loaded.');
+    }
+  });
 </script>
 
 <div class="wrapper">
